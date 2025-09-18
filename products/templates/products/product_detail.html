@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}{{ object.name }}｜ふくのこめ{% endblock %}
+
+{% block sidebar %}
+<aside class="col-md-3">
+    {% include "includes/aside.html" %}
+</aside>
+{% endblock %}
+
+{% block main_col_class %}col-md-9{% endblock %}
+
+{% block main_content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-3">
+            {% if object.image %}
+            <img src="{{ object.image.url }}" class="img-fluid rounded" alt="{{ object.name }}">
+            {% else %}
+            <img src="https://via.placeholder.com/500x300?text=No+Image" class="img-fluid rounded" alt="画像なし">
+            {% endif %}
+        </div>
+        
+        <div class="col-md-8">
+            <h2 class="mb-3">{{ object.name }}</h2>
+            <p>
+                <strong>{{ object.weight }}kg</strong>（{{ object.price_per_kg|floatformat:0 }}円/kg）<br>
+                {{ object.is_milled|yesno:"白米,玄米" }}｜{{ object.year }}年産
+            </p>
+            <p><strong>税抜価格：{{ object.total_price|floatformat:0|intcomma  }}円</strong><br>
+            税込価格：{{ object.total_price_with_tax|floatformat:0|intcomma  }}円</p>
+
+            {% if object.organic_method %}
+            <p class="text-success fw-bold">農法：{{ object.get_organic_method_display }}</p>
+            {% endif %}
+            
+            {% if object.stock > 0 %}
+            <p>在庫：{{ object.stock }}</p>
+            <form method="post" action="{% url 'cart:add_to_cart' product.id %}?next={{ request.path }}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">数量</label>
+                    <input type="number" name="quantity" id="quantity" min="1" max="{{ object.stock }}" value="1" class="form-control" required>
+                </div>
+                <input type="hidden" name="next" value="{{ request.path }}">
+                <button type="submit" class="btn btn-success">カートに追加</button>
+            </form>
+            {% else %}
+            <p class="text-danger fw-bold">在庫切れ</p>
+            <button class="btn btn-secondary" disabled>カートに追加</button>
+            {% endif %}
+        </div>
+        <div>
+            <a href="{{ request.META.HTTP_REFERER|default:'/' }}" class="btn btn-outline-primary mt-2">戻る</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

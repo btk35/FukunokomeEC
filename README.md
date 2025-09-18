@@ -1,0 +1,1 @@
+# ふくのこめEC (Django + Docker)

@@ -1,0 +1,18 @@
+{% load static %}
+
+<h3>品種から探す</h3>
+<ul class="menu_link">
+    <li><a href="{% url 'products:list' %}?brand=びのひかり">びのひかり</a></li>
+    <li><a href="{% url 'products:list' %}?brand=夢でつくし">夢でつくし</a></li>
+    <li><a href="{% url 'products:list' %}?brand=陽の蔵">陽の蔵</a></li>
+    <li><a href="{% url 'products:list' %}?brand=金の丸">金の丸</a></li>
+    <li><a href="{% url 'products:list' %}?brand=日の久米">日の久米</a></li>
+</ul>
+
+<h3>重さから探す</h3>
+<ul class="menu_link">
+    <li><a href="{% url 'products:list' %}?weight=2">2kg</a></li>
+    <li><a href="{% url 'products:list' %}?weight=5">5kg</a></li>
+    <li><a href="{% url 'products:list' %}?weight=10">10kg</a></li>
+    <li><a href="{% url 'products:list' %}?weight=20">20kg</a></li>
+</ul>

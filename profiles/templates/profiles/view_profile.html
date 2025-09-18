@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ user.get_full_name }} マイページ｜ふくのこめ{% endblock %}
+
+{% block sidebar %}
+<aside class="col-md-3">
+    {% include "profiles/includes/aside_profile.html" %}
+</aside>
+{% endblock %}
+
+{% block main_col_class %}col-md-9{% endblock %}
+
+{% block main_content %}
+<h2>ご登録情報</h2>
+<!-- アカウント -->
+<div class="account_info prof">
+    <h3>ログイン情報</h3>
+    <dl class="row border p-3 rounded bg-light">
+        <dt class="col-sm-3">メールアドレス</dt>
+        <dd class="col-sm-9"></dd>
+        <dt class="col-sm-3">パスワード</dt>
+        <dd class="col-sm-9">********</dd>
+    </dl>
+    <a href="#" class="btn btn-primary mt-2">変更する</a>
+</div>
+
+<!-- 請求先 -->
+<div class="prof">
+    <h3>ご住所（ご請求先）<span class="text-danger fs-6">必須</span></h3>
+
+    {% if is_profile_registered %}
+    <dl class="row border p-3 rounded bg-light">
+        <dt class="col-sm-3">氏名</dt>
+        <dd class="col-sm-9">{{ profile.last_name }} {{ profile.first_name }}</dd>
+
+        <dt class="col-sm-3">郵便番号</dt>
+        <dd class="col-sm-9">{{ profile.postal_code }}</dd>
+
+        <dt class="col-sm-3">住所</dt>
+        <dd class="col-sm-9">
+            {{ profile.prefecture }} {{ profile.city }} {{ profile.street_address }} {{ profile.address_detail }}
+        </dd>
+
+        <dt class="col-sm-3">電話番号</dt>
+        <dd class="col-sm-9">{{ profile.phone_number }}</dd>
+
+        <dt class="col-sm-3">住所種別</dt>
+        <dd class="col-sm-9">{{ profile.get_label_display }}</dd>
+    </dl>
+    <a href="{% url 'profiles:edit_profile' 'profile' %}" class="btn btn-primary mt-2">編集する</a>
+    {% else %}
+    <p>ご住所(請求先)の登録がまだありません。</p>
+    <a href="{% url 'profiles:edit_profile' 'profile' %}" class="btn btn-primary">登録する</a>
+    {% endif %}
+</div>
+
+<!-- 配送先 -->
+<div class="prof">
+    <h3>ご住所（配送先）</h3>
+
+    {% if is_shipping_registered %}
+    <dl class="row border p-3 rounded bg-light">
+        <dt class="col-sm-3">氏名</dt>
+        <dd class="col-sm-9">{{ shipping.last_name }} {{ shipping.first_name }}</dd>
+
+        <dt class="col-sm-3">郵便番号</dt>
+        <dd class="col-sm-9">{{ shipping.postal_code }}</dd>
+
+        <dt class="col-sm-3">住所</dt>
+        <dd class="col-sm-9">
+            {{ shipping.prefecture }} {{ shipping.city }} {{ shipping.street_address }} {{ shipping.address_detail }}
+        </dd>
+
+        <dt class="col-sm-3">電話番号</dt>
+        <dd class="col-sm-9">{{ shipping.phone_number }}</dd>
+
+        <dt class="col-sm-3">住所種別</dt>
+        <dd class="col-sm-9">{{ shipping.get_label_display }}</dd>
+    </dl>
+    <a href="{% url 'profiles:edit_profile' 'shipping' %}" class="btn btn-primary mt-2">編集する</a>
+    {% else %}
+    <p>配送先住所の登録がまだありません。</p>
+    <a href="{% url 'profiles:edit_profile' 'shipping' %}" class="btn btn-primary">登録する</a>
+    {% endif %}
+</div>
+{% endblock %}

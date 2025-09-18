@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}ログイン | ふくのこめ{% endblock %}
+
+{% block main_col_class %}col-md-6 offset-md-3{% endblock %}
+
+{% block main_content %}
+<h2 class="text-center">ログイン</h2>
+<form method="post" class="border p-4 rounded shadow-sm">
+    {% csrf_token %}
+    <div class="form-group mt-3">
+        <label for="id_username">メールアドレス</label>
+        {{ form.username }}
+    </div>
+    <div class="form-group mt-3">
+        <label for="id_password">パスワード</label>
+        {{ form.password }}
+    </div>
+    <input type="hidden" name="next" value="{{ request.GET.next }}">
+    <button type="submit" class="btn btn-primary btn-block mt-3 w-100">ログイン</button>
+</form>
+<div class="text-center mt-3">
+    <p>アカウントをお持ちでない場合は <a href="{% url 'signup' %}">こちら</a> から登録してください。</p>
+</div>
+{% endblock %}

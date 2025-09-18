@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}ふくのこめ｜福岡県産米のお取り寄せサイト{% endblock %}
+
+{% block hero %}
+<section class="hero py-5 text-center">
+    <h2 class="display-5 fw-bold">福岡県産のお米を全国へ</h2>
+    <p>ふくのこめは、農家直送の新鮮でおいしいお米をお届けします。</p>    
+</section>
+{% endblock %}
+
+{% block sidebar %}
+<aside class="col-md-3">
+    {% include "includes/aside.html" %}
+</aside>
+{% endblock %}
+
+{% block main_col_class %}col-md-9{% endblock %}
+
+{% block main_content %}
+<div class="container">
+    <h2 class="mb-4">おすすめ商品</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for product in product_list %}
+            {% include "products/_product_card.html" with product=product %}
+        {% empty %}
+            <p>現在、商品は登録されていません。</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

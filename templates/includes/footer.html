@@ -1,0 +1,31 @@
+<div class="container footer">
+    <div class="row">
+        <div class="col-md-3">
+            <h6>メニュー</h6>
+            <ul class="list-unstyled menu_link">
+                <li><a href="{% url 'products:list' %}">商品一覧</a></li>
+                <li><a href="{% url 'cart:view_cart' %}">カート</a></li>
+                <li><a href="{% url 'profiles:view_profile' %}">マイページ</a></li>
+            </ul>
+        </div>
+        <div class="col-md-3">
+            <h6>サポート</h6>
+            <ul class="list-unstyled menu_link">
+                <li><a href="#">よくある質問</a></li>
+                <li><a href="#">お問い合わせ</a></li>
+                <li><a href="#">配送・返品について</a></li>
+            </ul>
+        </div>
+        <div class="col-md-3">
+            <h6>ポリシー</h6>
+            <ul class="list-unstyled menu_link">
+                <li><a href="#">特定商取引法に基づく表記</a></li>
+                <li><a href="#">プライバシーポリシー</a></li>
+                <li><a href="#">利用規約</a></li>
+            </ul>
+        </div>
+        <div class="col-md-3 text-end">
+            <small>&copy; 2025 ふくのこめ</small>
+        </div>
+    </div>
+</div>

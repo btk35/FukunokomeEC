@@ -1,0 +1,19 @@
+<div class="col">
+    <div class="card h-100 p-2">
+        {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="card-img-top img-thumbnail d-block mx-auto">
+        {% else %}
+        <img src="https://via.placeholder.com/300x200?text=No+Image" alt="画像なし" class="card-img-top img-thumbnail d-block mx-auto">
+        {% endif %} 
+        <div class="card-body">
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text">
+                {{ product.weight }}kg・{{ product.price_per_kg|floatformat:0 }}円/kg<br>
+                {{ product.is_milled|yesno:"白米,玄米" }}・{{ product.year }}年産
+            </p>
+        </div>
+        <div class="card-footer text-center bg-white border-0">
+            <a href="{% url 'products:detail' product.pk %}" class="btn btn-outline-primary">詳細を見る</a>
+        </div>
+    </div>
+</div>

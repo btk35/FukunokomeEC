@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}商品一覧｜ふくのこめ{% endblock %}
+
+{% block sidebar %}
+<aside class="col-md-3">
+    {% include "includes/aside.html" %}
+</aside>
+{% endblock %}
+
+{% block main_col_class %}col-md-9{% endblock %}
+
+{% block main_content %}
+<div class="container">
+    <h2 class="mb-4">商品一覧</h2>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for product in object_list %}
+            {% include "products/_product_card.html" with product=product %}
+        {% empty %}
+            <p>現在、商品は登録されていません。</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,8 @@
+{% load static %}
+
+<h2 class="mypage_aside_menu fs-4">MyPageメニュー</h2>
+<ul class="menu_link mt-5">
+    <li><a href="{% url 'profiles:view_profile' %}">ご登録情報</a></li>
+    <li><a href="{% url 'orders:order_history' %}">ご注文履歴</a></li>
+    <li><a href="#">決済方法</a></li>
+</ul>

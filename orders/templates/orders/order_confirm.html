@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block title %}注文内容の確認 | ふくのこめ{% endblock %}
+{% block main_content %}
+
+<div class="container">
+    <h2 class="mb-4">ご注文内容の確認</h2>
+
+    <!-- ステップ表示 -->
+    <div class="mb-4">
+        <ul class="nav nav-pills nav-justified">
+            <li class="nav-item"><span class="nav-link disabled">1.請求内容確認と詳細入力</span></li>
+            <li class="nav-item"><span class="nav-link active">2. 確認</span></li>
+            <li class="nav-item"><span class="nav-link disabled">3. 完了</span></li>
+        </ul>
+    </div>
+    
+    <!-- カート内容 -->
+    <h3 class="mt-4">ご注文商品</h3>
+    {% for item in cart_items %}
+    <dl class="row border-bottom py-2">
+        <dt class="col-sm-3">商品名</dt>
+        <dd class="col-sm-9">{{ item.product.name }}</dd>
+        
+        <dt class="col-sm-3">数量</dt>
+        <dd class="col-sm-9">{{ item.quantity }} 袋</dd>
+        
+        <dt class="col-sm-3">小計</dt>
+        <dd class="col-sm-9">{{ item.subtotal|floatformat:0 |intcomma }} 円</dd>
+    </dl>
+    {% empty %}
+    <p>カートに商品がありません。</p>
+    {% endfor %}
+    
+    <!-- 送料表示 -->
+    <h3 class="mt-5 mb-3">送料</h3>
+        <dl class="row">
+            <dt class="col-sm-4">配送重量合計</dt>
+            <dd class="col-sm-8">{{ total_weight }}kg</dd>
+            <dt class="col-sm-4">送料（税抜）</dt>
+            <dd class="col-sm-8">{{ shipping_fee|floatformat:0 | intcomma }}円</dd>
+        </dl>
+
+    <!-- 金額詳細 -->
+    <h3 class="mt-4">お支払い金額</h3>
+    <dl class="row">
+        <dt class="col-sm-4">税抜金額（軽減税率対象）</dt>
+        <dd class="col-sm-8">{{ tax_detail.exempt|floatformat:0 | intcomma }}円</dd>
+        
+        <dt class="col-sm-4">税抜金額（通常税率）</dt>
+        <dd class="col-sm-8">{{ tax_detail.taxable|floatformat:0 | intcomma }}円</dd>
+        
+        <dt class="col-sm-4">消費税額（軽減税率）</dt>
+        <dd class="col-sm-8">{{ tax_detail.tax_exempt|floatformat:0 | intcomma }}円</dd>
+        
+        <dt class="col-sm-4">消費税額（通常税率）</dt>
+        <dd class="col-sm-8">{{ tax_detail.tax_general|floatformat:0 }}円</dd>
+        
+        <dt class="col-sm-4 font-weight-bold">今回のご請求金額</dt>
+        <dd class="col-sm-8 font-weight-bold text-danger h5">{{ total_price|floatformat:0 | intcomma }}円</dd>
+    </dl>
+    
+    <!-- 住所情報 -->
+    <h3 class="mt-4">お届け先住所</h3>
+    <p>
+        {% if order_data.shipping_choice == "shipping" %}
+        配送先住所にお届け
+        {% else %}
+        基本住所
+        {% endif %}
+    </p>
+    <dl class="row">
+        {% if order_data.shipping_choice == 'shipping' and shipping %}
+        <dt class="col-sm-3">宛名</dt>
+        <dd class="col-sm-9">{{ shipping.last_name }} {{ shipping.first_name }}</dd>
+        
+        <dt class="col-sm-3">住所</dt>
+        <dd class="col-sm-9">
+            〒{{ shipping.postal_code }}<br>
+            {{ shipping.prefecture }} {{ shipping.city }}<br>
+            {{ shipping.street_address }} {{ shipping.address_detail }}
+        </dd>
+        
+        <dt class="col-sm-3">電話番号</dt>
+        <dd class="col-sm-9">{{ shipping.phone_number }}</dd>
+        
+        {% else %}
+
+        <dt class="col-sm-3">宛名</dt>
+        <dd class="col-sm-9">{{ profile.last_name }} {{ profile.first_name }}</dd>
+        
+        <dt class="col-sm-3">住所</dt>
+        <dd class="col-sm-9">
+            〒{{ profile.postal_code }}<br>
+            {{ profile.prefecture }} {{ profile.city }}<br>
+            {{ profile.street_address }} {{ profile.address_detail }}
+        </dd>
+        
+        <dt class="col-sm-3">電話番号</dt>
+        <dd class="col-sm-9">{{ profile.phone_number }}</dd>
+        {% endif %}
+    </dl>
+    
+    <h3 class="mt-5"></h3>
+    <dl class="row">
+        <dt class="col-sm-3">お届け希望日</dt>
+        <dd class="col-sm-9">
+            {{ order_data.delivery_date }}
+        </dd>
+        
+        <dt class="col-sm-3">お支払い方法</dt>
+        <dd class="col-sm-9">
+            {% if order_data.payment_method == 'card' %}
+            クレジットカード
+            {% elif order_data.payment_method == 'bank' %}
+            銀行振込
+            {% else %}
+            QR決済
+            {% endif %}
+        </dd>
+        <dt class="col-sm-3">規約同意</dt>
+        <dd class="col-sm-9">同意します</dd>
+        <!-- ボタン -->
+        <form method="post" action="{% url 'orders:order_complete' %}" class="mt-4">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">注文を確定する</button>
+            <a href="{% url 'orders:order_detail' %}" class="btn btn-secondary ms-2">戻る</a>
+        </form>
+    </div>
+    
+    {% endblock %}

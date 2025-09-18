@@ -1,0 +1,126 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg fixed-top">
+	<div class="container-fluid">
+		
+		<!-- ブランドロゴ -->
+		<a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+			<img src="{% static 'img/rice_face.png' %}" alt="ロゴ" class="header_icon">
+			<h1>ふくのこめ</h1>
+		</a>
+		<small class="d-none d-lg-block">福岡県産米の通販サイト</small>
+		
+		<!-- ハンバーガー：小さい画面だけ表示 -->
+		<button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+		aria-controls="offcanvasNavbar">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	
+	<!-- 通常のナビゲーション：大きい画面のみ表示 -->
+	<div class="d-none d-lg-block ms-auto">
+		<ul class="navbar-nav align-items-center flex-row">
+			
+			{% if user.is_authenticated %}
+			<li class="nav-item px-2">
+				<span class="text-success fw-bold">{{ user.email }} さん、こんにちは！</span>
+			</li>
+			{% endif %}
+			
+			<li class="nav-item px-2">
+				<a class="nav-link" href="{% url 'products:list' %}">商品一覧</a>
+			</li>
+			<li class="nav-item px-2">
+				<a class="nav-link position-relative" href="{% url 'cart:view_cart' %}">
+					<i class="bi bi-cart"></i> カート
+					{% if cart_count|default:0 > 0 %}
+					<span
+						id="cart-badge"
+						class="badge text-primary position-absolute translate-middle"
+						style="top:0.2rem;">
+						{{ cart_count }}{% if cart_count > 99 %}+{% endif %}
+					</span>
+					{% endif %}
+				</a>
+			</li>
+			
+			{% if user.is_authenticated %}
+			<li class="nav-item px-2">
+				<a class="nav-link" href="{% url 'profiles:view_profile' %}"><i class="bi bi-person-circle"></i> マイページ</a>
+			</li>
+			<li class="nav-item px-2">
+				<form method="post" action="{% url 'logout' %}">
+					{% csrf_token %}
+					<button type="submit" class="btn btn-link nav-link" style="padding: 0;">
+						<i class="bi bi-box-arrow-right"></i> ログアウト
+					</button>
+				</form>
+			</li>
+			{% else %}
+			<li class="nav-item px-2">
+				<a class="nav-link" href="{% url 'login' %}"><i class="bi bi-box-arrow-in-right"></i> ログイン</a>
+			</li>
+			<li class="nav-item px-2">
+				<a class="nav-link" href="{% url 'signup' %}"><i class="bi bi-person-plus"></i> 新規登録</a>
+			</li>
+			{% endif %}
+			
+		</ul>
+	</div>
+	
+	<!-- Offcanvas：スマホ時だけ表示 -->
+	<div class="offcanvas offcanvas-end d-lg-none bg-white" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+		<div class="offcanvas-header">
+			<h5 class="offcanvas-title" id="offcanvasNavbarLabel">メニュー</h5>
+			<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="閉じる"></button>
+		</div>
+		<div class="offcanvas-body">
+			<ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+				
+				<li class="nav-item">
+					{% if user.is_authenticated %}
+					<span class="text-success fw-bold">{{ user.email }} さん、こんにちは！</span>
+					{% endif %}
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'products:list' %}">商品一覧</a>
+				</li>
+				<li class="nav-item px-2">
+					<a class="nav-link position-relative" href="{% url 'cart:view_cart' %}">
+						<i class="bi bi-cart"></i> カート
+						{% if cart_count|default:0 > 0 %}
+						<span
+							id="cart-badge"
+							class="badge text-primary"
+							style="top:0.2rem;">
+							{{ cart_count }}{% if cart_count > 99 %}+{% endif %}
+						</span>
+						{% endif %}
+					</a>
+				</li>
+				
+				{% if user.is_authenticated %}
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'profiles:view_profile' %}"><i class="bi bi-person-circle"></i> マイページ</a>
+				</li>
+				<li class="nav-item">
+					<form method="post" action="{% url 'logout' %}">
+						{% csrf_token %}
+						<button type="submit" class="btn btn-link nav-link" style="padding: 0;">
+							<i class="bi bi-box-arrow-right"></i> ログアウト
+						</button>
+					</form>
+				</li>
+				{% else %}
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'login' %}"><i class="bi bi-box-arrow-in-right"></i> ログイン</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{% url 'signup' %}"><i class="bi bi-person-plus"></i> 新規登録</a>
+				</li>
+				{% endif %}
+				
+			</ul>
+		</div>
+	</div>
+	
+</div>
+</nav>

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}の変更｜ふくのこめ{% endblock %}
+
+
+{% block sidebar %}
+{% if not is_order_flow %}
+<aside class="col-md-3">
+    {% include "profiles/includes/aside_profile.html" %}
+</aside>
+{% endif %}
+{% endblock %}
+
+{% block main_col_class %}col-md-6 col-lg-6 mx-auto{% endblock %}
+
+{% block main_content %}
+
+
+<h2 class="mb-4">
+    {% if request.GET.next %}
+    ご住所の登録
+    {% else %}
+    <h2>{{ title }}</h2>
+    {% endif %}
+</h2>
+
+{# どちらから飛んできたかで #}
+<p>
+    {% if request.GET.next %}
+    {% if target == "profile" %}
+    ご注文手続きのために<strong>ご住所（請求先住所）</strong>の登録が必要です。以下のフォームにご記入ください。<br>
+    <small>ご入力後は、ご注文詳細入力画面に戻ります。</small>
+    {% elif target == "shipping" %}
+    請求先とは異なる、<strong>配送先住所</strong>のご登録が可能です。<br>以下のフォームにご記入ください。<br>
+    <small>ご入力後は、ご注文詳細入力画面に戻ります。</small>
+    {% endif %}
+    {% endif %}
+</p>
+
+<form method="post" autocomplete="off">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="id_last_name" class="form-label">姓<span class="text-danger small ps-3">※必須</span></label>
+        {{ form.last_name }}
+    </div>
+    <div class="mb-3">
+        <label for="id_first_name" class="form-label">名<span class="text-danger small ps-3">※必須</span></label>
+        {{ form.first_name }}
+    </div>
+    <div class="mb-3">
+        <label for="id_postal_code" class="form-label">郵便番号<span class="text-danger small ps-3 span_required">※必須</span></label>
+        {{ form.postal_code }}
+    </div>
+    <div id="postcode-error" class="text-danger small mt-1" style="display: none;"></div>
+
+    <div class="mb-3">
+        <label for="id_prefecture" class="form-label">都道府県<span class="text-danger small ps-3 span_required">※必須</span></label>
+        {{ form.prefecture }}
+    </div>
+    <div class="mb-3">
+        <label for="id_city" class="form-label">市区町村<span class="text-danger small ps-3 span_required">※必須</span></label>
+        {{ form.city }}
+    </div>
+    <div class="mb-3">
+        <label for="id_street_address" class="form-label">丁目・番地<span class="text-danger small ps-3">※必須</span></label>
+        {{ form.street_address }}
+    </div>
+    <div class="mb-3">
+        <label for="id_address_detail" class="form-label">ビル名・部屋番号等</label>
+        {{ form.address_detail }}
+    </div>
+    <div class="mb-3">
+        <label for="id_phone_number" class="form-label">電話番号<span class="text-danger small ps-3">※必須</span></label>
+        {{ form.phone_number }}
+    </div>
+    <div class="mb-3">
+        <label for="id_label" class="form-label">お届け先区分<span class="text-danger small ps-3">※必須</span></label>
+        {{ form.label }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">保存する</button>
+    <a href="{{ request.GET.next|default:next_url }}" class="btn btn-secondary ms-2">キャンセル</a>
+</form>
+
+{% endblock %}

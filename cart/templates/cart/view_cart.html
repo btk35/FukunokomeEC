@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %}カートのご確認｜ふくのこめ{% endblock %}
+
+{% block sidebar %}
+<aside class="col-md-3">
+  {% include "includes/aside.html" %}
+</aside>
+{% endblock %}
+
+{% block main_col_class %}col-md-9{% endblock %}
+
+{% block main_content %}
+
+{% if cart_items %}
+{% comment %} 商品リスト {% endcomment %}
+{% for item in cart_items %}
+<div class="card mb-3">
+    <div class="card-body">
+        <dl class="row mb-0">   
+            <dt class="col-sm-3">商品名</dt>
+            <dd class="col-sm-9">{{ item.product.name }}</dd>
+            
+            <dt class="col-sm-3">パッケージ単価</dt>
+            <dd class="col-sm-9">{{ item.product.total_price|floatformat:0|intcomma }}円</dd>
+            <dt class="col-sm-3">数量</dt>
+            <dd class="col-sm-9">
+                <form method="POST" action="{% url 'cart:update_cart_item' cart_item_id=item.id %}" class="d-flex align-items-center gap-2">
+                    {% csrf_token %}
+                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control form-control-sm" style="width: 80px;">
+                    <button type="submit" class="btn btn-sm btn-warning">更新</button>
+                </form>
+            </dd>
+
+            <dt class="col-sm-3">小計（税抜）</dt>
+            <dd class="col-sm-9">{{ item.subtotal|floatformat:0|intcomma }} 円</dd>
+
+            <dt class="col-sm-3">小計（税込）</dt>
+            <dd class="col-sm-9">{{ item.subtotal_with_tax|floatformat:0|intcomma }} 円</dd>
+
+            <dt class="col-sm-3">操作</dt>
+            <dd class="col-sm-9">
+                <a href="{% url 'cart:remove_cart_item' cart_item_id=item.id %}" class="btn btn-sm btn-outline-danger">削除</a>
+            </dd>
+        </dl>
+    </div>
+</div>
+{% endfor %}
+
+<div class="text-end mb-4">
+    <p class="text-muted">合計金額（税抜）：{{ total_price|floatformat:0|intcomma }} 円</p>
+    <p class="fs-4 fw-bold">合計金額（税込）：{{ total_price_with_tax|floatformat:0|intcomma }} 円</p>
+    <p class="text-danger small mb-0">10,000円以上のお買上で送料無料！</p>
+    <p class="text-muted small mb-0">※送料はご注文確認画面でご確認いただけます</p>
+    <p class="text-muted small">※消費税は請求書単位で計算されるため、表示と請求額が数円異なる場合があります。</p>
+</div>
+
+{% comment %} 次へ進む／商品一覧に戻るボタン {% endcomment %}
+<div class="d-flex justify-content-between">
+    <a href="{% url 'products:list' %}" class="btn btn-outline-secondary">商品一覧に戻る</a>
+    <a href="{% url 'orders:order_detail' %}" class="btn btn-primary">注文手続きへ進む</a>
+</div>
+
+{% else %}
+<div class="alert alert-info text-center mt-4">
+    カートに商品がありません。
+</div>
+<div class="text-center">
+    <a href="{% url 'products:list' %}" class="btn btn-outline-primary mt-2">商品一覧に戻る</a>
+</div>
+{% endif %}
+{% endblock %}

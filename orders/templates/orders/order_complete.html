@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}ご注文完了 | ふくのこめ{% endblock %}
+{% block main_content %}
+
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h2 class="text-success">ご注文いただきありがとうございました</h2>
+        <p class="lead">ご注文内容の控えを、ご登録のメールアドレスに送信いたしました。</p>
+    </div>
+
+    <div class="mb-4">
+        <h3>ご注文情報</h3>
+        <dl class="row">
+            <dt class="col-sm-3">ご注文日</dt>
+            <dd class="col-sm-9">{{ order.ordered_at|date:"Y年m月d日 H:i" }}</dd>
+
+            <dt class="col-sm-3">ご注文ID</dt>
+            <dd class="col-sm-9">{{ order.order_number }}</dd>
+        </dl>
+    </div>
+
+    <div class="mb-5">
+        <ul class="list-unstyled">
+            <li class="mb-2">・ご登録のメールアドレスに、ご注文内容の詳細をお送りいたします。</li>
+            <li class="mb-2">・商品の発送状況は、マイページのご注文履歴にてご確認いただけます。</li>
+            <li class="mb-2">・お問い合わせの際は、ご注文日・ご注文IDをご記載のうえ、メールまたはお問い合わせフォームよりご連絡ください。</li>
+        </ul>
+        <p class="text-muted small">※ 上記フローは今回未実装です</p>
+    </div>
+
+    <div class="mb-5">
+        <h5>おすすめ商品</h5>
+        <p class="text-muted">※ 表示機能は未実装です</p>
+    </div>
+
+    <div class="text-center">
+        <a href="{% url 'home' %}" class="btn btn-primary">トップページに戻る</a>
+    </div>
+</div>
+
+{% endblock %}
