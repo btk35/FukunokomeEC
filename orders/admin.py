@@ -15,10 +15,15 @@ class OrderAdmin(admin.ModelAdmin):
         'id', 'user', 'ordered_at', 'status', 'payment_status', 'payment_method',
         'subtotal', 'shipping_fee', 'total_price'
     )
+    list_display_links = ('id', 'user')
+    list_editable = ('status', 'payment_status')
+
     list_filter = ('status', 'payment_status', 'payment_method', 'ordered_at')
     search_fields = ('user__email', 'billing_last_name', 'billing_first_name')
     inlines = [OrderItemInline]
     readonly_fields = ('ordered_at',)
+    date_hierarchy = 'ordered_at'
+    save_on_top = True
 
 # 重量別送料設定
 @admin.register(WeightBasedShippingFee)
