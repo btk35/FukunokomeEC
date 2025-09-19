@@ -1,6 +1,8 @@
 # ふくのこめEC (Django)
 ![トップページ](./docs/screens/top.png)
-[YouTubeでデモを見る（限定公開）](https://www.youtube.com/watch?v=yFBFK0sBxP8)
+<a href="https://www.youtube.com/watch?v=yFBFK0sBxP8" target="_blank" rel="noopener noreferrer">
+YouTubeでデモを見る（限定公開）
+</a>
 
 Djangoで構成した、**架空のお米の通販ECサイト** です
 - ユーザ登録
