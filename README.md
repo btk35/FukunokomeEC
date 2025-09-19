@@ -45,9 +45,13 @@ Note:
 必要に応じて .env.example をコピーして .env を作成しし、KEYを書き換えてください  
   
   
-  
+
 ## 画面遷移図
 ![画面遷移図](./docs/screens/ui-flow.png)
+
+## 使用素材について
+- タイトルロゴ：友人制作（許可を得て掲載）
+- 商品画像・背景画像：AI生成（ChatGPT,Gemini利用）
 
 ## スクリーンショット
 ![カート](./docs/screens/cart.png)
